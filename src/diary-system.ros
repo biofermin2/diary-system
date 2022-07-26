@@ -1,0 +1,26 @@
+﻿#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  #+quicklisp(ql:quickload '(:trivial-shell :local-time) :silent t)) ; => (:TRIVIAL-SHELL :LOCAL-TIME)
+
+(defpackage :ros.script.diary-system.3866688173
+  (:use :cl :trivial-shell :local-time)) ; => #<PACKAGE "ROS.SCRIPT.DIARY-SYSTEM.3866688173">
+(in-package :ros.script.diary-system.3866688173) ; => #<PACKAGE "ROS.SCRIPT.DIARY-SYSTEM.3866688173">
+
+(setf trivial-shell:*bourne-compatible-shell* "/usr/bin/zsh") ; => "/usr/bin/zsh"
+
+#.(load "/home/hiro/howm/junk/utils.lisp") ; => T
+
+(setf qdate (split " " (trivial-shell:shell-command "cut -f 2 -d: =(python ~/core/bin/qreki.py)"))) ; => ("")
+
+(setf sun-date (car qdate))		; => "2020年8月15日"
+(setf luna-date (trim (cadr qdate)))	; => "2020年6月26日"
+
+
+
+(defun main (&rest argv)
+  (declare (ignorable argv)))
+;;; vim: set ft=lisp lisp:
