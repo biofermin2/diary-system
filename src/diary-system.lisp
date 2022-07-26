@@ -75,39 +75,6 @@ sun-date		 ; => "2017年9月11日"
 ;; CONTENTS   = NIL
 ;;; 陰暦を求める
 
-;; 構造体
-(defstruct person
-  name age)															; => PERSON
-
-(defvar me (make-person :name "東　洋光" :age 42))	; => ME
-(defvar mei1 (make-person :name "東　照香" :age 9)) ; => MEI1
-(defvar mei2 (make-person :name "東　澄乃" :age 6)) ; => MEI2
-
-
-(with-slots (name age) me
-  (format t "I'm ~A. ~D years old." name age)) ; => I'm 東　洋光. 42 years old.NIL
-
-(person-age me)													; => 42
-(with-slots (age) me
-  (incf age))														; => 43
-(person-age me)													; => 43
-;; defvarはdefparameterと違って基本的に一度定義すると追加で書き換えられない。
-;;しかし、これを見るとわかるが、with-slotsで年齢を一つ増加させる事が出来た。
-;; 結婚などで名前を書き換える時はどうしたらいいのだろうか？
-;; やってみよう。
-(with-slots (name) mei1
-  (setf person-name "西 　照香"))				; => "西　照香"
-(person-name mei1)											; => "東　照香"
-
-;;これは出来なかった。。。これでは結婚出来ないではないか！
-;; もう一度トライ
-(with-slots (name) mei1
-  (setf (person-name mei1) "西　照香"))	; => "西　照香"
-(person-name mei1)											; => "西　照香"
-;; 出来た！！！
-;; うまくやればdefvarでもこうやってスロット内容を変更出来る。
-;; そういう意味ではdefvarで統一した方が変なエラーが起きなくて済むような気がした。[2016-06-16 17:19:59]
-
 (defmethod baz ((x integer) (y integer))
   (format t "integer ~D, integer ~D~%" x y)) ; => #<STANDARD-METHOD COMMON-LISP-USER::BAZ (INTEGER INTEGER) {1005126503}>
 (defmethod baz ((x integer) (y float))
